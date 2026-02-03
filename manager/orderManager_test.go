@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	px "github.com/GolangToolKits/go-http-proxy"
-	gdb "github.com/GolangToolKits/go-mysql"
 	"github.com/Learning-Go-Server-Development/OrderService/database"
 	"github.com/Learning-Go-Server-Development/OrderService/manager"
 )
@@ -126,22 +125,22 @@ func TestServiceManager_UpdateOrder(t *testing.T) {
 }
 
 func TestServiceManager_GetOrder(t *testing.T) {
-	mm := &gdb.MyDB{
-		Host:     "localhost:3306",
-		User:     "",
-		Password: "",
-		Database: "lgs_orders",
-	}
-	m := mm.New()
-	// mm := &gdb.MyDBMock{}
-	// mm.MockTestRow = &gdb.DbRow{
-	// 	Row: []string{"0"},
+	// mm := &gdb.MyDB{
+	// 	Host:     "localhost:3306",
+	// 	User:     "",
+	// 	Password: "",
+	// 	Database: "lgs_orders",
 	// }
-	// mm.MockConnectSuccess = true
-	// mm.MockInsertID1 = 2
-	// mm.MockInsertSuccess1 = true
 	// m := mm.New()
-	m.Connect()
+	// // mm := &gdb.MyDBMock{}
+	// // mm.MockTestRow = &gdb.DbRow{
+	// // 	Row: []string{"0"},
+	// // }
+	// // mm.MockConnectSuccess = true
+	// // mm.MockInsertID1 = 2
+	// // mm.MockInsertSuccess1 = true
+	// // m := mm.New()
+	// m.Connect()
 
 	//var odb database.OrderDB
 	//odb.DB = m
@@ -189,22 +188,22 @@ func TestServiceManager_GetOrder(t *testing.T) {
 }
 
 func TestServiceManager_GetCurrentOrders(t *testing.T) {
-	mm := &gdb.MyDB{
-		Host:     "localhost:3306",
-		User:     "",
-		Password: "",
-		Database: "lgs_orders",
-	}
-	m := mm.New()
-	// mm := &gdb.MyDBMock{}
-	// mm.MockTestRow = &gdb.DbRow{
-	// 	Row: []string{"0"},
+	// mm := &gdb.MyDB{
+	// 	Host:     "localhost:3306",
+	// 	User:     "",
+	// 	Password: "",
+	// 	Database: "lgs_orders",
 	// }
-	// mm.MockConnectSuccess = true
-	// mm.MockInsertID1 = 2
-	// mm.MockInsertSuccess1 = true
 	// m := mm.New()
-	m.Connect()
+	// // mm := &gdb.MyDBMock{}
+	// // mm.MockTestRow = &gdb.DbRow{
+	// // 	Row: []string{"0"},
+	// // }
+	// // mm.MockConnectSuccess = true
+	// // mm.MockInsertID1 = 2
+	// // mm.MockInsertSuccess1 = true
+	// // m := mm.New()
+	// m.Connect()
 
 	//var odb database.OrderDB
 	//odb.DB = m
@@ -262,27 +261,7 @@ func TestServiceManager_GetCurrentOrders(t *testing.T) {
 }
 
 func TestServiceManager_GetPastOrders(t *testing.T) {
-	mm := &gdb.MyDB{
-		Host:     "localhost:3306",
-		User:     "",
-		Password: "",
-		Database: "lgs_orders",
-	}
-	m := mm.New()
-	// mm := &gdb.MyDBMock{}
-	// mm.MockTestRow = &gdb.DbRow{
-	// 	Row: []string{"0"},
-	// }
-	// mm.MockConnectSuccess = true
-	// mm.MockInsertID1 = 2
-	// mm.MockInsertSuccess1 = true
-	// m := mm.New()
-	m.Connect()
-
-	var odb database.OrderDB
-	odb.DB = m
 	var s manager.ServiceManager
-	s.DB = odb.New()
 
 	var gpx px.GoProxy
 	s.Proxy = &gpx
@@ -315,22 +294,22 @@ func TestServiceManager_GetPastOrders(t *testing.T) {
 }
 
 func TestServiceManager_DeleteCurrentOrder(t *testing.T) {
-	mm := &gdb.MyDB{
-		Host:     "localhost:3306",
-		User:     "",
-		Password: "",
-		Database: "lgs_orders",
-	}
-	m := mm.New()
-	// mm := &gdb.MyDBMock{}
-	// mm.MockTestRow = &gdb.DbRow{
-	// 	Row: []string{"0"},
+	// mm := &gdb.MyDB{
+	// 	Host:     "localhost:3306",
+	// 	User:     "",
+	// 	Password: "",
+	// 	Database: "lgs_orders",
 	// }
-	// mm.MockConnectSuccess = true
-	// mm.MockInsertID1 = 2
-	// mm.MockInsertSuccess1 = true
 	// m := mm.New()
-	m.Connect()
+	// // mm := &gdb.MyDBMock{}
+	// // mm.MockTestRow = &gdb.DbRow{
+	// // 	Row: []string{"0"},
+	// // }
+	// // mm.MockConnectSuccess = true
+	// // mm.MockInsertID1 = 2
+	// // mm.MockInsertSuccess1 = true
+	// // m := mm.New()
+	// m.Connect()
 
 	//var odb database.OrderDB
 	//odb.DB = m
