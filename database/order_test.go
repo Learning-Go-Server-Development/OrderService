@@ -45,12 +45,12 @@ func TestOrderDB_AddOrder(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// TODO: construct the receiver type.
-			var d database.OrderDB
-			d.DB = m
+			var od database.OrderDB
+			od.DB = m
 			// -----this line not used yet-----
 			// -----bacause we havent implemented all-----
 			// -----methods of the Database interface-----
-			//d := od.New()
+			d := od.New()
 			got, got2 := d.AddOrder(tt.o)
 			// TODO: update the condition below to compare got with tt.want.
 			if got != tt.want {
@@ -99,12 +99,12 @@ func TestOrderDB_UpdateOrder(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// TODO: construct the receiver type.
-			var d database.OrderDB
-			d.DB = m
+			var od database.OrderDB
+			od.DB = m
 			// -----this line not used yet-----
 			// -----bacause we havent implemented all-----
 			// -----methods of the Database interface-----
-			//d := od.New()
+			d := od.New()
 			got := d.UpdateOrder(tt.o)
 			// TODO: update the condition below to compare got with tt.want.
 			if got != tt.want {
@@ -150,12 +150,12 @@ func TestOrderDB_GetOrder(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// TODO: construct the receiver type.
-			var d database.OrderDB
-			d.DB = m
+			var od database.OrderDB
+			od.DB = m
 			// -----this line not used yet-----
 			// -----bacause we havent implemented all-----
 			// -----methods of the Database interface-----
-			//d := od.New()
+			d := od.New()
 			got := d.GetOrder(tt.id)
 			// TODO: update the condition below to compare got with tt.want.
 			if (*got).OrderNumber != tt.want {
@@ -202,12 +202,12 @@ func TestOrderDB_GetAllOrders(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// TODO: construct the receiver type.
-			var d database.OrderDB
-			d.DB = m
+			var od database.OrderDB
+			od.DB = m
 			// -----this line not used yet-----
 			// -----bacause we havent implemented all-----
 			// -----methods of the Database interface-----
-			//d := od.New()
+			d := od.New()
 			got := d.GetAllOrders(tt.cid)
 			// TODO: update the condition below to compare got with tt.want.
 			if len((*got)) != tt.want {
@@ -249,12 +249,12 @@ func TestOrderDB_DeleteOrder(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// TODO: construct the receiver type.
-			var d database.OrderDB
-			d.DB = m
+			var od database.OrderDB
+			od.DB = m
 			// -----this line not used yet-----
 			// -----bacause we havent implemented all-----
 			// -----methods of the Database interface-----
-			//d := od.New()
+			d := od.New()
 			got := d.DeleteOrder(tt.id)
 			// TODO: update the condition below to compare got with tt.want.
 			if got != tt.want {

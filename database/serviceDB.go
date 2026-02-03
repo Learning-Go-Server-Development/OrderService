@@ -44,6 +44,6 @@ func (d *OrderDB) testConnection() bool {
 //---methods of the Database interface
 //---have been implemented
 
-// func (d *OrderDB) New() Database {
-// 	return d
-// }
+func (d *OrderDB) New() Database {
+	return d
+}

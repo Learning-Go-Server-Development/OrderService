@@ -18,4 +18,14 @@ const (
 		" where id = ? "
 
 	insertItem = "insert into order_items (order_id, product_id) values (?, ?) "
+
+	updateItem = " UPDATE order_items SET product_id = ? " +
+		" where id = ? "
+
+	selectItemList = "SELECT id, order_id, product_id " +
+		" from  order_items " +
+		" where order_id = ? "
+
+	deleteItem = " DELETE from order_items " +
+		" where id = ? "
 )
