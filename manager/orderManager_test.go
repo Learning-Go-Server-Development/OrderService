@@ -1,0 +1,370 @@
+package manager_test
+
+import (
+	"testing"
+
+	px "github.com/GolangToolKits/go-http-proxy"
+	gdb "github.com/GolangToolKits/go-mysql"
+	"github.com/Learning-Go-Server-Development/OrderService/database"
+	"github.com/Learning-Go-Server-Development/OrderService/manager"
+)
+
+func TestServiceManager_AddOrder(t *testing.T) {
+	// mm := &gdb.MyDB{
+	// 	Host:     "localhost:3306",
+	// 	User:     "",
+	// 	Password: "",
+	// 	Database: "lgs_orders",
+	// }
+	// m := mm.New()
+	// mm := &gdb.MyDBMock{}
+	// mm.MockTestRow = &gdb.DbRow{
+	// 	Row: []string{"0"},
+	// }
+	// mm.MockConnectSuccess = true
+	// mm.MockInsertID1 = 2
+	// mm.MockInsertSuccess1 = true
+	// m := mm.New()
+	// m.Connect()
+
+	///////var odb database.OrderDB
+	////// odb.DB = m
+	var s manager.ServiceManager
+	////////s.DB = odb.New()
+
+	//------ using mocked OrderDB-------
+	var odb database.MockOrderDB
+	odb.AddOrderID = 1
+	odb.AddOrderSuc = true
+	s.DB = &odb
+	//------ using mocked OrderDB-------
+
+	tests := []struct {
+		name string // description of this test case
+		// Named input parameters for target function.
+		o    *manager.Order
+		want bool
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test 1",
+			o: &manager.Order{
+				OrderNumber: "MOD-123545-4",
+				CustomerID:  12345,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// TODO: construct the receiver type.
+			got := s.AddOrder(tt.o)
+			// TODO: update the condition below to compare got with tt.want.
+			if got.Success != true {
+				t.Errorf("AddOrder() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestServiceManager_UpdateOrder(t *testing.T) {
+	// mm := &gdb.MyDB{
+	// 	Host:     "localhost:3306",
+	// 	User:     "",
+	// 	Password: "",
+	// 	Database: "lgs_orders",
+	// }
+	// m := mm.New()
+	// // mm := &gdb.MyDBMock{}
+	// // mm.MockTestRow = &gdb.DbRow{
+	// // 	Row: []string{"0"},
+	// // }
+	// // mm.MockConnectSuccess = true
+	// // mm.MockInsertID1 = 2
+	// // mm.MockInsertSuccess1 = true
+	// // m := mm.New()
+	// m.Connect()
+
+	//var odb database.OrderDB
+	//odb.DB = m
+	var s manager.ServiceManager
+	//s.DB = odb.New()
+
+	//------ using mocked OrderDB-------
+	var odb database.MockOrderDB
+	odb.UpdateOrderSuc = true
+	s.DB = &odb
+	//------ using mocked OrderDB-------
+
+	tests := []struct {
+		name string // description of this test case
+		// Named input parameters for target function.
+		o    *manager.Order
+		want bool
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test 1",
+			o: &manager.Order{
+				ID:          15,
+				OrderNumber: "MOD-123545-55",
+				CustomerID:  3,
+			},
+			want: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// TODO: construct the receiver type.
+
+			got := s.UpdateOrder(tt.o)
+			// TODO: update the condition below to compare got with tt.want.
+			if got.Success != true {
+				t.Errorf("UpdateOrder() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestServiceManager_GetOrder(t *testing.T) {
+	mm := &gdb.MyDB{
+		Host:     "localhost:3306",
+		User:     "",
+		Password: "",
+		Database: "lgs_orders",
+	}
+	m := mm.New()
+	// mm := &gdb.MyDBMock{}
+	// mm.MockTestRow = &gdb.DbRow{
+	// 	Row: []string{"0"},
+	// }
+	// mm.MockConnectSuccess = true
+	// mm.MockInsertID1 = 2
+	// mm.MockInsertSuccess1 = true
+	// m := mm.New()
+	m.Connect()
+
+	//var odb database.OrderDB
+	//odb.DB = m
+	var s manager.ServiceManager
+	//s.DB = odb.New()
+
+	//------ using mocked OrderDB-------
+	var odb database.MockOrderDB
+
+	s.DB = &odb
+	//------ using mocked OrderDB-------
+
+	tests := []struct {
+		name string // description of this test case
+		// Named input parameters for target function.
+		id   int64
+		want string
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test 1",
+			id:   15,
+			want: "MOD-123545-55",
+		},
+		{
+			name: "test 2",
+			id:   55,
+			want: "",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// TODO: construct the receiver type.
+			var o database.Order
+			o.ID = tt.id
+			o.OrderNumber = tt.want
+			odb.MockOrder = &o
+			got := s.GetOrder(tt.id)
+			// TODO: update the condition below to compare got with tt.want.
+			if got.OrderNumber != tt.want {
+				t.Errorf("GetOrder() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestServiceManager_GetCurrentOrders(t *testing.T) {
+	mm := &gdb.MyDB{
+		Host:     "localhost:3306",
+		User:     "",
+		Password: "",
+		Database: "lgs_orders",
+	}
+	m := mm.New()
+	// mm := &gdb.MyDBMock{}
+	// mm.MockTestRow = &gdb.DbRow{
+	// 	Row: []string{"0"},
+	// }
+	// mm.MockConnectSuccess = true
+	// mm.MockInsertID1 = 2
+	// mm.MockInsertSuccess1 = true
+	// m := mm.New()
+	m.Connect()
+
+	//var odb database.OrderDB
+	//odb.DB = m
+	var s manager.ServiceManager
+	//s.DB = odb.New()
+
+	//------ using mocked OrderDB-------
+	var odb database.MockOrderDB
+
+	s.DB = &odb
+	//------ using mocked OrderDB-------
+
+	tests := []struct {
+		name string // description of this test case
+		// Named input parameters for target function.
+		id        int64
+		id2       int64
+		cid       int64
+		orderNum  string
+		orderNum2 string
+		want      int
+	}{
+		// TODO: Add test cases.
+		{
+			name:      "test 1",
+			id:        1,
+			id2:       2,
+			cid:       12345,
+			orderNum:  "MOD-123545-55",
+			orderNum2: "",
+			want:      2,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// TODO: construct the receiver type.
+			var o database.Order
+			o.ID = tt.id
+			o.OrderNumber = tt.orderNum
+
+			var o2 database.Order
+			o2.ID = tt.id2
+			o2.OrderNumber = tt.orderNum2
+			var morders = []database.Order{o, o2}
+			odb.MockOrderList = &morders
+			//odb.MockOrder = &o
+
+			got := s.GetCurrentOrders(tt.cid)
+			// TODO: update the condition below to compare got with tt.want.
+			if len(*got) != tt.want {
+				t.Errorf("GetCurrentOrders() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestServiceManager_GetPastOrders(t *testing.T) {
+	mm := &gdb.MyDB{
+		Host:     "localhost:3306",
+		User:     "",
+		Password: "",
+		Database: "lgs_orders",
+	}
+	m := mm.New()
+	// mm := &gdb.MyDBMock{}
+	// mm.MockTestRow = &gdb.DbRow{
+	// 	Row: []string{"0"},
+	// }
+	// mm.MockConnectSuccess = true
+	// mm.MockInsertID1 = 2
+	// mm.MockInsertSuccess1 = true
+	// m := mm.New()
+	m.Connect()
+
+	var odb database.OrderDB
+	odb.DB = m
+	var s manager.ServiceManager
+	s.DB = odb.New()
+
+	var gpx px.GoProxy
+	s.Proxy = &gpx
+	s.OrderServiceHost = "http://localhost:3001/rs"
+
+	tests := []struct {
+		name string // description of this test case
+		// Named input parameters for target function.
+		cid  int64
+		want int
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test 1",
+			cid:  12345,
+			want: 1,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// TODO: construct the receiver type.
+
+			got := s.GetPastOrders(tt.cid)
+			// TODO: update the condition below to compare got with tt.want.
+			if len(*got) != tt.want {
+				t.Errorf("GetPastOrders() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestServiceManager_DeleteCurrentOrder(t *testing.T) {
+	mm := &gdb.MyDB{
+		Host:     "localhost:3306",
+		User:     "",
+		Password: "",
+		Database: "lgs_orders",
+	}
+	m := mm.New()
+	// mm := &gdb.MyDBMock{}
+	// mm.MockTestRow = &gdb.DbRow{
+	// 	Row: []string{"0"},
+	// }
+	// mm.MockConnectSuccess = true
+	// mm.MockInsertID1 = 2
+	// mm.MockInsertSuccess1 = true
+	// m := mm.New()
+	m.Connect()
+
+	//var odb database.OrderDB
+	//odb.DB = m
+	var s manager.ServiceManager
+	//s.DB = odb.New()
+
+	//------ using mocked OrderDB-------
+	var odb database.MockOrderDB
+
+	s.DB = &odb
+	//------ using mocked OrderDB-------
+
+	tests := []struct {
+		name string // description of this test case
+		// Named input parameters for target function.
+		id   int64
+		want bool
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test 1",
+			id:   11,
+			want: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// TODO: construct the receiver type.
+			odb.DeleteOrderSuc = tt.want
+			got := s.DeleteCurrentOrder(tt.id)
+			// TODO: update the condition below to compare got with tt.want.
+			if (*got).Success != tt.want {
+				t.Errorf("DeleteCurrentOrder() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
