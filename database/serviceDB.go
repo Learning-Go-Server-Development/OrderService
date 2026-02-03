@@ -8,6 +8,11 @@ import (
 	gdb "github.com/GolangToolKits/go-mysql"
 )
 
+const (
+	timeFormat     = "2006-01-02 15:04:05"
+	dateOnlyFormat = "2006-01-02"
+)
+
 type OrderDB struct {
 	DB gdb.Database
 }
@@ -35,6 +40,10 @@ func (d *OrderDB) testConnection() bool {
 	return rtn
 }
 
-// func (d *OrderDB)AddOrder(o *Order) (bool, int64){
+//---implement this method when all
+//---methods of the Database interface
+//---have been implemented
 
+// func (d *OrderDB) New() Database {
+// 	return d
 // }
