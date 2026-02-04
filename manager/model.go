@@ -58,3 +58,26 @@ type ProxyOrder struct {
 	OID      string  `json:"oid"`
 	Products []int64 `json:"products"`
 }
+
+type ProxyCustomer struct {
+	ID          int64  `json:"id"`
+	FirstName   string `json:"firstName"`
+	LastName    string `json:"lastName"`
+	PhoneNumber string `json:"phoneNumber"`
+}
+
+type ProxyAddress struct {
+	ID      int64  `json:"id"`
+	CID     int64  `json:"cid"`
+	Street  string `json:"street"`
+	City    string `json:"city"`
+	State   string `json:"state"`
+	ZipCode string `json:"zipCode"`
+}
+
+type ProxyProduct struct {
+	ID          int64   `json:"id"`
+	SKU         string  `json:"sku"`
+	Description string  `json:"description"`
+	Price       float64 `json:"price"`
+}
