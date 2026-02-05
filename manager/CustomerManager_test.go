@@ -8,11 +8,11 @@ import (
 )
 
 func TestServiceManager_GetCustomer(t *testing.T) {
-	var s manager.ServiceManager
+	var ss manager.ServiceManager
 
 	var gpx px.GoProxy
-	s.Proxy = &gpx
-	s.OrderServiceHost = "http://localhost:3001/rs"
+	ss.Proxy = &gpx
+	ss.OrderServiceHost = "http://localhost:3001/rs"
 
 	tests := []struct {
 		name string // description of this test case
@@ -30,7 +30,7 @@ func TestServiceManager_GetCustomer(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// TODO: construct the receiver type.
-
+			s := ss.New()
 			got := s.GetCustomer(tt.phone)
 			// TODO: update the condition below to compare got with tt.want.
 			if got.LastName != tt.want {

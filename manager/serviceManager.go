@@ -11,6 +11,6 @@ type ServiceManager struct {
 	OrderServiceHost string
 }
 
-// func (s *ServiceManager) New() Manager {
-// 	return s
-// }
+func (s *ServiceManager) New() Manager {
+	return s
+}

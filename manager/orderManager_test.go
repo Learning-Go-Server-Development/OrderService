@@ -51,6 +51,7 @@ func TestServiceManager_AddOrder(t *testing.T) {
 				OrderNumber: "MOD-123545-4",
 				CustomerID:  12345,
 			},
+			want: true,
 		},
 	}
 	for _, tt := range tests {
@@ -58,7 +59,7 @@ func TestServiceManager_AddOrder(t *testing.T) {
 			// TODO: construct the receiver type.
 			got := s.AddOrder(tt.o)
 			// TODO: update the condition below to compare got with tt.want.
-			if got.Success != true {
+			if got.Success != tt.want {
 				t.Errorf("AddOrder() = %v, want %v", got, tt.want)
 			}
 		})
@@ -263,7 +264,26 @@ func TestServiceManager_GetCurrentOrders(t *testing.T) {
 func TestServiceManager_GetPastOrders(t *testing.T) {
 	var s manager.ServiceManager
 
+	//------ live testing-----
+
 	var gpx px.GoProxy
+	s.Proxy = &gpx
+	s.OrderServiceHost = "http://localhost:3001/rs"
+
+	//-------live testing-------
+
+	//----- mock testing-----
+
+	// 	var w1 http.Response
+	// 	w1.Body = io.NopCloser(bytes.NewBufferString(`[{"id": 12345555,"cid": 12345,"oid": "OD-1255878","products": [
+	// 12345,258444]}]`))
+	// 	var gpx px.MockGoProxy
+	// 	gpx.MockDoSuccess1 = true
+	// 	gpx.MockRespCode = 200
+	// 	gpx.MockResp = &w1
+
+	//--- mock testing-----
+
 	s.Proxy = &gpx
 	s.OrderServiceHost = "http://localhost:3001/rs"
 
