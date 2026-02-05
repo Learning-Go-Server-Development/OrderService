@@ -28,14 +28,14 @@ func TestServiceManager_AddOrder(t *testing.T) {
 
 	///////var odb database.OrderDB
 	////// odb.DB = m
-	var s manager.ServiceManager
+	var ss manager.ServiceManager
 	////////s.DB = odb.New()
 
 	//------ using mocked OrderDB-------
 	var odb database.MockOrderDB
 	odb.AddOrderID = 1
 	odb.AddOrderSuc = true
-	s.DB = &odb
+	ss.DB = &odb
 	//------ using mocked OrderDB-------
 
 	tests := []struct {
@@ -57,6 +57,7 @@ func TestServiceManager_AddOrder(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// TODO: construct the receiver type.
+			s := ss.New()
 			got := s.AddOrder(tt.o)
 			// TODO: update the condition below to compare got with tt.want.
 			if got.Success != tt.want {
@@ -86,13 +87,13 @@ func TestServiceManager_UpdateOrder(t *testing.T) {
 
 	//var odb database.OrderDB
 	//odb.DB = m
-	var s manager.ServiceManager
+	var ss manager.ServiceManager
 	//s.DB = odb.New()
 
 	//------ using mocked OrderDB-------
 	var odb database.MockOrderDB
 	odb.UpdateOrderSuc = true
-	s.DB = &odb
+	ss.DB = &odb
 	//------ using mocked OrderDB-------
 
 	tests := []struct {
@@ -116,6 +117,7 @@ func TestServiceManager_UpdateOrder(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			// TODO: construct the receiver type.
 
+			s := ss.New()
 			got := s.UpdateOrder(tt.o)
 			// TODO: update the condition below to compare got with tt.want.
 			if got.Success != true {
@@ -145,13 +147,13 @@ func TestServiceManager_GetOrder(t *testing.T) {
 
 	//var odb database.OrderDB
 	//odb.DB = m
-	var s manager.ServiceManager
+	var ss manager.ServiceManager
 	//s.DB = odb.New()
 
 	//------ using mocked OrderDB-------
 	var odb database.MockOrderDB
 
-	s.DB = &odb
+	ss.DB = &odb
 	//------ using mocked OrderDB-------
 
 	tests := []struct {
@@ -179,6 +181,7 @@ func TestServiceManager_GetOrder(t *testing.T) {
 			o.ID = tt.id
 			o.OrderNumber = tt.want
 			odb.MockOrder = &o
+			s := ss.New()
 			got := s.GetOrder(tt.id)
 			// TODO: update the condition below to compare got with tt.want.
 			if got.OrderNumber != tt.want {
@@ -208,13 +211,13 @@ func TestServiceManager_GetCurrentOrders(t *testing.T) {
 
 	//var odb database.OrderDB
 	//odb.DB = m
-	var s manager.ServiceManager
+	var ss manager.ServiceManager
 	//s.DB = odb.New()
 
 	//------ using mocked OrderDB-------
 	var odb database.MockOrderDB
 
-	s.DB = &odb
+	ss.DB = &odb
 	//------ using mocked OrderDB-------
 
 	tests := []struct {
@@ -252,6 +255,7 @@ func TestServiceManager_GetCurrentOrders(t *testing.T) {
 			odb.MockOrderList = &morders
 			//odb.MockOrder = &o
 
+			s := ss.New()
 			got := s.GetCurrentOrders(tt.cid)
 			// TODO: update the condition below to compare got with tt.want.
 			if len(*got) != tt.want {
@@ -262,13 +266,12 @@ func TestServiceManager_GetCurrentOrders(t *testing.T) {
 }
 
 func TestServiceManager_GetPastOrders(t *testing.T) {
-	var s manager.ServiceManager
+	var ss manager.ServiceManager
 
 	//------ live testing-----
 
 	var gpx px.GoProxy
-	s.Proxy = &gpx
-	s.OrderServiceHost = "http://localhost:3001/rs"
+	ss.OrderServiceHost = "http://localhost:3001/rs"
 
 	//-------live testing-------
 
@@ -284,8 +287,8 @@ func TestServiceManager_GetPastOrders(t *testing.T) {
 
 	//--- mock testing-----
 
-	s.Proxy = &gpx
-	s.OrderServiceHost = "http://localhost:3001/rs"
+	ss.Proxy = &gpx
+	ss.OrderServiceHost = "http://localhost:3001/rs"
 
 	tests := []struct {
 		name string // description of this test case
@@ -304,6 +307,7 @@ func TestServiceManager_GetPastOrders(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			// TODO: construct the receiver type.
 
+			s := ss.New()
 			got := s.GetPastOrders(tt.cid)
 			// TODO: update the condition below to compare got with tt.want.
 			if len(*got) != tt.want {
@@ -333,13 +337,13 @@ func TestServiceManager_DeleteCurrentOrder(t *testing.T) {
 
 	//var odb database.OrderDB
 	//odb.DB = m
-	var s manager.ServiceManager
+	var ss manager.ServiceManager
 	//s.DB = odb.New()
 
 	//------ using mocked OrderDB-------
 	var odb database.MockOrderDB
 
-	s.DB = &odb
+	ss.DB = &odb
 	//------ using mocked OrderDB-------
 
 	tests := []struct {
@@ -359,6 +363,7 @@ func TestServiceManager_DeleteCurrentOrder(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			// TODO: construct the receiver type.
 			odb.DeleteOrderSuc = tt.want
+			s := ss.New()
 			got := s.DeleteCurrentOrder(tt.id)
 			// TODO: update the condition below to compare got with tt.want.
 			if (*got).Success != tt.want {

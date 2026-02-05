@@ -1,6 +1,9 @@
 package manager_test
 
 import (
+	"bytes"
+	"io"
+	"net/http"
 	"testing"
 
 	px "github.com/GolangToolKits/go-http-proxy"
@@ -10,9 +13,25 @@ import (
 func TestServiceManager_GetCustomer(t *testing.T) {
 	var ss manager.ServiceManager
 
-	var gpx px.GoProxy
+	//------ live testing-----
+
+	// var gpx px.GoProxy
+	// ss.OrderServiceHost = "http://localhost:3001/rs"
+
+	//------ live testing-----4
+
+	//----- mock testing-----
+
+	var w1 http.Response
+	w1.Body = io.NopCloser(bytes.NewBufferString(`{"id": 12345,"firstName": "Bob","lastName":"Roberts","phoneNumber": "154-555-7878"}`))
+	var gpx px.MockGoProxy
+	gpx.MockDoSuccess1 = true
+	gpx.MockRespCode = 200
+	gpx.MockResp = &w1
+
 	ss.Proxy = &gpx
-	ss.OrderServiceHost = "http://localhost:3001/rs"
+
+	//----- mock testing-----
 
 	tests := []struct {
 		name string // description of this test case
@@ -41,11 +60,11 @@ func TestServiceManager_GetCustomer(t *testing.T) {
 }
 
 func TestServiceManager_GetCustomerAdresses(t *testing.T) {
-	var s manager.ServiceManager
+	var ss manager.ServiceManager
 
 	var gpx px.GoProxy
-	s.Proxy = &gpx
-	s.OrderServiceHost = "http://localhost:3001/rs"
+	ss.Proxy = &gpx
+	ss.OrderServiceHost = "http://localhost:3001/rs"
 
 	tests := []struct {
 		name string // description of this test case
@@ -64,6 +83,7 @@ func TestServiceManager_GetCustomerAdresses(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			// TODO: construct the receiver type.
 
+			s := ss.New()
 			got := s.GetCustomerAdresses(tt.cid)
 			// TODO: update the condition below to compare got with tt.want.
 			if (*got)[0].Street != tt.want {

@@ -27,14 +27,14 @@ func TestServiceManager_AddItem(t *testing.T) {
 
 	//var odb database.OrderDB
 	//odb.DB = m
-	var s manager.ServiceManager
+	var ss manager.ServiceManager
 	//s.DB = odb.New()
 
 	//------ using mocked OrderDB-------
 	var odb database.MockOrderDB
 	odb.AddItemID = 1
 	odb.AddItemSuc = true
-	s.DB = &odb
+	ss.DB = &odb
 	//------ using mocked OrderDB-------
 
 	tests := []struct {
@@ -57,6 +57,7 @@ func TestServiceManager_AddItem(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			// TODO: construct the receiver type.
 
+			s := ss.New()
 			got := s.AddItem(tt.i)
 			// TODO: update the condition below to compare got with tt.want.
 			if got.Success != tt.want {
@@ -86,13 +87,13 @@ func TestServiceManager_UpdateItem(t *testing.T) {
 
 	//var odb database.OrderDB
 	//odb.DB = m
-	var s manager.ServiceManager
+	var ss manager.ServiceManager
 	//s.DB = odb.New()
 
 	//------ using mocked OrderDB-------
 	var odb database.MockOrderDB
 	odb.UpdateItemSuc = true
-	s.DB = &odb
+	ss.DB = &odb
 	//------ using mocked OrderDB-------
 
 	tests := []struct {
@@ -116,6 +117,7 @@ func TestServiceManager_UpdateItem(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			// TODO: construct the receiver type.
 
+			s := ss.New()
 			got := s.UpdateItem(tt.i)
 			// TODO: update the condition below to compare got with tt.want.
 			if got.Success != tt.want {
@@ -145,7 +147,7 @@ func TestServiceManager_GetItems(t *testing.T) {
 
 	//var odb database.OrderDB
 	//odb.DB = m
-	var s manager.ServiceManager
+	var ss manager.ServiceManager
 	//s.DB = odb.New()
 
 	//------ using mocked OrderDB-------
@@ -157,7 +159,7 @@ func TestServiceManager_GetItems(t *testing.T) {
 	}
 	odb.MockItemList = &[]database.Item{i}
 
-	s.DB = &odb
+	ss.DB = &odb
 	//------ using mocked OrderDB-------
 
 	tests := []struct {
@@ -176,6 +178,7 @@ func TestServiceManager_GetItems(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			// TODO: construct the receiver type.
 
+			s := ss.New()
 			got := s.GetItems(tt.oid)
 			// TODO: update the condition below to compare got with tt.want.
 			if len(*got) != tt.want {
@@ -205,13 +208,13 @@ func TestServiceManager_DeleteItem(t *testing.T) {
 
 	//var odb database.OrderDB
 	//odb.DB = m
-	var s manager.ServiceManager
+	var ss manager.ServiceManager
 	//s.DB = odb.New()
 
 	//------ using mocked OrderDB-------
 	var odb database.MockOrderDB
 	odb.DeleteItemSuc = true
-	s.DB = &odb
+	ss.DB = &odb
 	//------ using mocked OrderDB-------
 
 	tests := []struct {
@@ -231,6 +234,7 @@ func TestServiceManager_DeleteItem(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			// TODO: construct the receiver type.
 
+			s := ss.New()
 			got := s.DeleteItem(tt.iid)
 			// TODO: update the condition below to compare got with tt.want.
 			if got.Success != tt.want {

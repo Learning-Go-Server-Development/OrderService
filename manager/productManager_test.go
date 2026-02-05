@@ -8,11 +8,11 @@ import (
 )
 
 func TestServiceManager_GetProduct(t *testing.T) {
-	var s manager.ServiceManager
+	var ss manager.ServiceManager
 
 	var gpx px.GoProxy
-	s.Proxy = &gpx
-	s.OrderServiceHost = "http://localhost:3001/rs"
+	ss.Proxy = &gpx
+	ss.OrderServiceHost = "http://localhost:3001/rs"
 
 	tests := []struct {
 		name string // description of this test case
@@ -31,6 +31,7 @@ func TestServiceManager_GetProduct(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			// TODO: construct the receiver type.
 
+			s := ss.New()
 			got := s.GetProduct(tt.sku)
 			// TODO: update the condition below to compare got with tt.want.
 			if got.Description != tt.want {
