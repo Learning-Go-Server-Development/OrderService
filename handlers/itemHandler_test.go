@@ -8,6 +8,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	mux "github.com/GolangToolKits/grrt"
 	"github.com/Learning-Go-Server-Development/OrderService/handlers"
 	"github.com/Learning-Go-Server-Development/OrderService/manager"
 )
@@ -113,6 +114,67 @@ func TestServiceHandler_UpdateItem(t *testing.T) {
 			body, _ := io.ReadAll(w.Result().Body)
 			json.Unmarshal(body, &res)
 			if w.Code != tt.code || res.Success != tt.suc {
+				t.Fail()
+			}
+		})
+	}
+}
+
+func TestServiceHandler_GetItems(t *testing.T) {
+	var mm manager.MockServiceManager
+	m := mm.New()
+	var hh handlers.ServiceHandler
+	hh.Manager = m
+
+	tests := []struct {
+		name string // description of this test case
+		// Named input parameters for target function.
+		w     http.ResponseWriter
+		r     *http.Request
+		code  int
+		ctype string
+		json  io.ReadCloser
+		suc   bool
+		want2 bool
+		id    string
+		i     *[]manager.Item
+		iid   int64
+		len   int
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test 1",
+			code: 200,
+			id:   "1",
+			i: &[]manager.Item{
+				{
+					ID:        3,
+					OrderID:   1,
+					ProductID: 55,
+				},
+			},
+			iid: 1,
+			len: 1,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mm.MockItems = tt.i
+			r, _ := http.NewRequest("GET", "/ffllist", nil)
+			vars := map[string]string{
+				"oid": tt.id,
+			}
+			r = mux.SetURLVars(r, vars)
+			// r.Header.Set("Content-Type", tt.ctype)
+			w := httptest.NewRecorder()
+			// TODO: construct the receiver type.
+			//var h handlers.ServiceHandler
+			hh.GetItems(w, r)
+
+			var res []manager.Item
+			body, _ := io.ReadAll(w.Result().Body)
+			json.Unmarshal(body, &res)
+			if w.Code != tt.code || len(res) != tt.len {
 				t.Fail()
 			}
 		})
