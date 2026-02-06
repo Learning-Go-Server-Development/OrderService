@@ -55,7 +55,8 @@ func TestServiceHandler_AddOrder(t *testing.T) {
 			w := httptest.NewRecorder()
 			// TODO: construct the receiver type.
 
-			hh.AddOrder(w, r)
+			h := hh.New()
+			h.AddOrder(w, r)
 			var res manager.ResponseID
 			body, _ := io.ReadAll(w.Result().Body)
 			json.Unmarshal(body, &res)
@@ -105,7 +106,8 @@ func TestServiceHandler_UpdateOrder(t *testing.T) {
 
 			// TODO: construct the receiver type.
 
-			hh.UpdateOrder(w, r)
+			h := hh.New()
+			h.UpdateOrder(w, r)
 			var res manager.Response
 			body, _ := io.ReadAll(w.Result().Body)
 			json.Unmarshal(body, &res)
@@ -162,7 +164,8 @@ func TestServiceHandler_GetOrder(t *testing.T) {
 			// r.Header.Set("Content-Type", tt.ctype)
 			w := httptest.NewRecorder()
 
-			hh.GetOrder(w, r)
+			h := hh.New()
+			h.GetOrder(w, r)
 
 			var res manager.Order
 			body, _ := io.ReadAll(w.Result().Body)
@@ -223,7 +226,8 @@ func TestServiceHandler_GetCurrentOrders(t *testing.T) {
 			// r.Header.Set("Content-Type", tt.ctype)
 			w := httptest.NewRecorder()
 
-			hh.GetCurrentOrders(w, r)
+			h := hh.New()
+			h.GetCurrentOrders(w, r)
 
 			var res []manager.Order
 			body, _ := io.ReadAll(w.Result().Body)
@@ -285,7 +289,8 @@ func TestServiceHandler_GetPastOrders(t *testing.T) {
 			// r.Header.Set("Content-Type", tt.ctype)
 			w := httptest.NewRecorder()
 
-			hh.GetPastOrders(w, r)
+			h := hh.New()
+			h.GetPastOrders(w, r)
 			var res []manager.Order
 			body, _ := io.ReadAll(w.Result().Body)
 			json.Unmarshal(body, &res)
@@ -335,7 +340,8 @@ func TestServiceHandler_DeleteOrder(t *testing.T) {
 			w := httptest.NewRecorder()
 			// TODO: construct the receiver type.
 			//var h handlers.ServiceHandler
-			hh.DeleteOrder(w, r)
+			h := hh.New()
+			h.DeleteOrder(w, r)
 			var res manager.Response
 			body, _ := io.ReadAll(w.Result().Body)
 			json.Unmarshal(body, &res)

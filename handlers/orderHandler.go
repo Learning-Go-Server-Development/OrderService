@@ -13,15 +13,15 @@ import (
 
 func (h *ServiceHandler) AddOrder(w http.ResponseWriter, r *http.Request) {
 	h.setContentType(w)
-	bcOk := h.checkContent(r)
-	if !bcOk {
+	Ok := h.checkContent(r)
+	if !Ok {
 		http.Error(w, "json required", http.StatusUnsupportedMediaType)
 	} else {
 		var o manager.Order
-		ps, err := h.processBody(r, &o)
-		log.Println("bs: ", ps)
+		po, err := h.processBody(r, &o)
+		log.Println("bs: ", po)
 		log.Println("err: ", err)
-		if !ps || err != nil {
+		if !po || err != nil {
 			http.Error(w, "Trouble parsing body", http.StatusBadRequest)
 		} else {
 			or := h.Manager.AddOrder(&o)
@@ -39,15 +39,15 @@ func (h *ServiceHandler) AddOrder(w http.ResponseWriter, r *http.Request) {
 
 func (h *ServiceHandler) UpdateOrder(w http.ResponseWriter, r *http.Request) {
 	h.setContentType(w)
-	bcOk := h.checkContent(r)
-	if !bcOk {
+	Ok := h.checkContent(r)
+	if !Ok {
 		http.Error(w, "json required", http.StatusUnsupportedMediaType)
 	} else {
 		var o manager.Order
-		ps, err := h.processBody(r, &o)
-		log.Println("bs: ", ps)
+		po, err := h.processBody(r, &o)
+		log.Println("bs: ", po)
 		log.Println("err: ", err)
-		if !ps || err != nil {
+		if !po || err != nil {
 			http.Error(w, "Trouble parsing body", http.StatusBadRequest)
 		} else {
 			or := h.Manager.UpdateOrder(&o)
@@ -92,8 +92,8 @@ func (h *ServiceHandler) GetCurrentOrders(w http.ResponseWriter, r *http.Request
 	vars := mux.Vars(r)
 	log.Println("vars: ", len(vars))
 	if len(vars) == 1 {
-		var oidStr = vars["cid"]
-		cid, ciderr := strconv.ParseInt(oidStr, 10, 64)
+		var cidStr = vars["cid"]
+		cid, ciderr := strconv.ParseInt(cidStr, 10, 64)
 		if ciderr == nil {
 			os := h.Manager.GetCurrentOrders(cid)
 			if os != nil {
@@ -116,8 +116,8 @@ func (h *ServiceHandler) GetPastOrders(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	log.Println("vars: ", len(vars))
 	if len(vars) == 1 {
-		var oidStr = vars["cid"]
-		cid, ciderr := strconv.ParseInt(oidStr, 10, 64)
+		var cidStr = vars["cid"]
+		cid, ciderr := strconv.ParseInt(cidStr, 10, 64)
 		if ciderr == nil {
 			os := h.Manager.GetPastOrders(cid)
 			if os != nil {
@@ -143,10 +143,10 @@ func (h *ServiceHandler) DeleteOrder(w http.ResponseWriter, r *http.Request) {
 		var oidStr = vars["id"]
 		oid, oiderr := strconv.ParseInt(oidStr, 10, 64)
 		if oiderr == nil {
-			o := h.Manager.DeleteCurrentOrder(oid)
-			if o != nil {
+			or := h.Manager.DeleteCurrentOrder(oid)
+			if or != nil {
 				w.WriteHeader(http.StatusOK)
-				resJSON, _ := json.Marshal(o)
+				resJSON, _ := json.Marshal(or)
 				fmt.Fprint(w, string(resJSON))
 			} else {
 				w.WriteHeader(http.StatusBadRequest)

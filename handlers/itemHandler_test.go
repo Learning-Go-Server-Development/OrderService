@@ -55,7 +55,8 @@ func TestServiceHandler_AddItem(t *testing.T) {
 			w := httptest.NewRecorder()
 			// TODO: construct the receiver type.
 			//var h handlers.ServiceHandler
-			hh.AddItem(w, r)
+			h := hh.New()
+			h.AddItem(w, r)
 
 			var res manager.ResponseID
 			body, _ := io.ReadAll(w.Result().Body)
@@ -108,7 +109,8 @@ func TestServiceHandler_UpdateItem(t *testing.T) {
 			w := httptest.NewRecorder()
 			// TODO: construct the receiver type.
 			//var h handlers.ServiceHandler
-			hh.UpdateItem(w, r)
+			h := hh.New()
+			h.UpdateItem(w, r)
 
 			var res manager.Response
 			body, _ := io.ReadAll(w.Result().Body)
@@ -169,7 +171,8 @@ func TestServiceHandler_GetItems(t *testing.T) {
 			w := httptest.NewRecorder()
 			// TODO: construct the receiver type.
 			//var h handlers.ServiceHandler
-			hh.GetItems(w, r)
+			h := hh.New()
+			h.GetItems(w, r)
 
 			var res []manager.Item
 			body, _ := io.ReadAll(w.Result().Body)
@@ -221,7 +224,8 @@ func TestServiceHandler_DeleteItem(t *testing.T) {
 			// TODO: construct the receiver type.
 			// TODO: construct the receiver type.
 			//var h handlers.ServiceHandler
-			hh.DeleteItem(w, r)
+			h := hh.New()
+			h.DeleteItem(w, r)
 			var res manager.Response
 			body, _ := io.ReadAll(w.Result().Body)
 			json.Unmarshal(body, &res)

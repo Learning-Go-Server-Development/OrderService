@@ -13,6 +13,10 @@ type ServiceHandler struct {
 	Manager manager.Manager
 }
 
+func (h *ServiceHandler) New() Handler {
+	return h
+}
+
 // CheckContent CheckContent
 func (h *ServiceHandler) checkContent(r *http.Request) bool {
 	var rtn bool
