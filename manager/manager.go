@@ -1,5 +1,7 @@
 package manager
 
+import "github.com/Learning-Go-Server-Development/OrderService/delegate"
+
 type Manager interface {
 	AddOrder(o *Order) *ResponseID
 	UpdateOrder(o *Order) *Response
@@ -17,5 +19,5 @@ type Manager interface {
 
 	GetCustomer(phone string) *Customer
 
-	GetCustomerAdresses(cid int64) *[]Address
+	GetCustomerAdresses(cid int64) *[]delegate.Address
 }

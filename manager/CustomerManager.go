@@ -4,6 +4,8 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+
+	"github.com/Learning-Go-Server-Development/OrderService/delegate"
 )
 
 func (s *ServiceManager) GetCustomer(phone string) *Customer {
@@ -27,10 +29,10 @@ func (s *ServiceManager) GetCustomer(phone string) *Customer {
 	return &rtn
 }
 
-func (s *ServiceManager) GetCustomerAdresses(cid int64) *[]Address {
-	var rtn = []Address{}
+func (s *ServiceManager) GetCustomerAdresses(cid int64) *[]delegate.Address {
+	var rtn = []delegate.Address{}
 	if cid != 0 {
-		var pads []ProxyAddress
+		var pads []delegate.ProxyAddress
 		scid := strconv.FormatInt(cid, 10)
 		req, err := http.NewRequest(http.MethodGet, s.OrderServiceHost+"/addresses/get/"+scid, nil)
 		if err == nil {
@@ -38,16 +40,7 @@ func (s *ServiceManager) GetCustomerAdresses(cid int64) *[]Address {
 			log.Println("suc: ", suc)
 			log.Println("stat: ", stat)
 			if suc && stat == http.StatusOK {
-				for _, pa := range pads {
-					var a Address
-					a.ID = pa.ID
-					a.CID = pa.CID
-					a.Street = pa.Street
-					a.City = pa.City
-					a.State = pa.State
-					a.ZipCode = pa.ZipCode
-					rtn = append(rtn, a)
-				}
+				rtn = *s.Delegate.ProcessCustomerAddresses(&pads)
 			}
 		}
 	}

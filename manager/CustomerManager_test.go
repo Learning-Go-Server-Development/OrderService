@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	px "github.com/GolangToolKits/go-http-proxy"
+	"github.com/Learning-Go-Server-Development/OrderService/delegate"
 	"github.com/Learning-Go-Server-Development/OrderService/manager"
 )
 
@@ -61,6 +62,8 @@ func TestServiceManager_GetCustomer(t *testing.T) {
 
 func TestServiceManager_GetCustomerAdresses(t *testing.T) {
 	var ss manager.ServiceManager
+	var del delegate.ServiceDelegate
+	ss.Delegate = del.New()
 
 	var gpx px.GoProxy
 	ss.Proxy = &gpx
