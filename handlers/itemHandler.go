@@ -86,3 +86,27 @@ func (h *ServiceHandler) GetItems(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 	}
 }
+
+func (h *ServiceHandler) DeleteItem(w http.ResponseWriter, r *http.Request) {
+	h.setContentType(w)
+	vars := mux.Vars(r)
+	log.Println("vars: ", len(vars))
+	if len(vars) == 1 {
+		var iidStr = vars["id"]
+		iid, iiderr := strconv.ParseInt(iidStr, 10, 64)
+		if iiderr == nil {
+			ir := h.Manager.DeleteItem(iid)
+			if ir != nil {
+				w.WriteHeader(http.StatusOK)
+				resJSON, _ := json.Marshal(ir)
+				fmt.Fprint(w, string(resJSON))
+			} else {
+				w.WriteHeader(http.StatusBadRequest)
+			}
+		} else {
+			w.WriteHeader(http.StatusBadRequest)
+		}
+	} else {
+		w.WriteHeader(http.StatusBadRequest)
+	}
+}

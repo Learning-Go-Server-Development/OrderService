@@ -180,3 +180,54 @@ func TestServiceHandler_GetItems(t *testing.T) {
 		})
 	}
 }
+
+func TestServiceHandler_DeleteItem(t *testing.T) {
+	var mm manager.MockServiceManager
+	m := mm.New()
+	var hh handlers.ServiceHandler
+	hh.Manager = m
+
+	tests := []struct {
+		name string // description of this test case
+		// Named input parameters for target function.
+		w     http.ResponseWriter
+		r     *http.Request
+		code  int
+		suc   bool
+		want2 bool
+		id    string
+	}{
+		// TODO: Add test cases.
+		{
+			name:  "test 1",
+			code:  200,
+			id:    "1",
+			suc:   true,
+			want2: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mm.DeleteItemRes = &manager.Response{
+				Success: tt.want2,
+			}
+			r, _ := http.NewRequest("DELETE", "/ffllist", nil)
+			vars := map[string]string{
+				"id": tt.id,
+			}
+			r = mux.SetURLVars(r, vars)
+			//r.Header.Set("Content-Type", tt.ctype)
+			w := httptest.NewRecorder()
+			// TODO: construct the receiver type.
+			// TODO: construct the receiver type.
+			//var h handlers.ServiceHandler
+			hh.DeleteItem(w, r)
+			var res manager.Response
+			body, _ := io.ReadAll(w.Result().Body)
+			json.Unmarshal(body, &res)
+			if w.Code != tt.code || res.Success != tt.suc {
+				t.Fail()
+			}
+		})
+	}
+}
