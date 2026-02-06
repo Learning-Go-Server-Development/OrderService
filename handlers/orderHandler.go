@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
+	mux "github.com/GolangToolKits/grrt"
 	"github.com/Learning-Go-Server-Development/OrderService/manager"
 )
 
@@ -32,5 +34,127 @@ func (h *ServiceHandler) AddOrder(w http.ResponseWriter, r *http.Request) {
 				w.WriteHeader(http.StatusInternalServerError)
 			}
 		}
+	}
+}
+
+func (h *ServiceHandler) UpdateOrder(w http.ResponseWriter, r *http.Request) {
+	h.setContentType(w)
+	bcOk := h.checkContent(r)
+	if !bcOk {
+		http.Error(w, "json required", http.StatusUnsupportedMediaType)
+	} else {
+		var o manager.Order
+		ps, err := h.processBody(r, &o)
+		log.Println("bs: ", ps)
+		log.Println("err: ", err)
+		if !ps || err != nil {
+			http.Error(w, "Trouble parsing body", http.StatusBadRequest)
+		} else {
+			or := h.Manager.UpdateOrder(&o)
+			log.Println("oo: ", or)
+			if or.Success {
+				w.WriteHeader(http.StatusOK)
+				resJSON, _ := json.Marshal(or)
+				fmt.Fprint(w, string(resJSON))
+			} else {
+				w.WriteHeader(http.StatusInternalServerError)
+			}
+		}
+	}
+}
+
+func (h *ServiceHandler) GetOrder(w http.ResponseWriter, r *http.Request) {
+	h.setContentType(w)
+	vars := mux.Vars(r)
+	log.Println("vars: ", len(vars))
+	if len(vars) == 1 {
+		var oidStr = vars["id"]
+		oid, oiderr := strconv.ParseInt(oidStr, 10, 64)
+		if oiderr == nil {
+			o := h.Manager.GetOrder(oid)
+			if o != nil {
+				w.WriteHeader(http.StatusOK)
+				resJSON, _ := json.Marshal(o)
+				fmt.Fprint(w, string(resJSON))
+			} else {
+				w.WriteHeader(http.StatusBadRequest)
+			}
+		} else {
+			w.WriteHeader(http.StatusBadRequest)
+		}
+	} else {
+		w.WriteHeader(http.StatusBadRequest)
+	}
+}
+
+func (h *ServiceHandler) GetCurrentOrders(w http.ResponseWriter, r *http.Request) {
+	h.setContentType(w)
+	vars := mux.Vars(r)
+	log.Println("vars: ", len(vars))
+	if len(vars) == 1 {
+		var oidStr = vars["cid"]
+		cid, ciderr := strconv.ParseInt(oidStr, 10, 64)
+		if ciderr == nil {
+			os := h.Manager.GetCurrentOrders(cid)
+			if os != nil {
+				w.WriteHeader(http.StatusOK)
+				resJSON, _ := json.Marshal(os)
+				fmt.Fprint(w, string(resJSON))
+			} else {
+				w.WriteHeader(http.StatusBadRequest)
+			}
+		} else {
+			w.WriteHeader(http.StatusBadRequest)
+		}
+	} else {
+		w.WriteHeader(http.StatusBadRequest)
+	}
+}
+
+func (h *ServiceHandler) GetPastOrders(w http.ResponseWriter, r *http.Request) {
+	h.setContentType(w)
+	vars := mux.Vars(r)
+	log.Println("vars: ", len(vars))
+	if len(vars) == 1 {
+		var oidStr = vars["cid"]
+		cid, ciderr := strconv.ParseInt(oidStr, 10, 64)
+		if ciderr == nil {
+			os := h.Manager.GetPastOrders(cid)
+			if os != nil {
+				w.WriteHeader(http.StatusOK)
+				resJSON, _ := json.Marshal(os)
+				fmt.Fprint(w, string(resJSON))
+			} else {
+				w.WriteHeader(http.StatusBadRequest)
+			}
+		} else {
+			w.WriteHeader(http.StatusBadRequest)
+		}
+	} else {
+		w.WriteHeader(http.StatusBadRequest)
+	}
+}
+
+func (h *ServiceHandler) DeleteOrder(w http.ResponseWriter, r *http.Request) {
+	h.setContentType(w)
+	vars := mux.Vars(r)
+	log.Println("vars: ", len(vars))
+	if len(vars) == 1 {
+		var oidStr = vars["id"]
+		oid, oiderr := strconv.ParseInt(oidStr, 10, 64)
+		if oiderr == nil {
+			o := h.Manager.DeleteCurrentOrder(oid)
+			if o != nil {
+				w.WriteHeader(http.StatusOK)
+				resJSON, _ := json.Marshal(o)
+				fmt.Fprint(w, string(resJSON))
+			} else {
+				w.WriteHeader(http.StatusBadRequest)
+			}
+		} else {
+			w.WriteHeader(http.StatusBadRequest)
+		}
+	} else {
+		w.WriteHeader(http.StatusBadRequest)
 	}
 }
