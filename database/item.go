@@ -16,8 +16,8 @@ func (d *OrderDB) AddItem(i *Item) (bool, int64) {
 		a = append(a, i.OrderID, i.ProductID)
 		log.Println(a)
 		suc, id = d.DB.Insert(insertItem, a...)
-		log.Println("suc in add blog", suc)
-		log.Println("id in add blog", id)
+		log.Println("suc in add item", suc)
+		log.Println("id in add item", id)
 	}
 	return suc, id
 }
@@ -31,7 +31,7 @@ func (d *OrderDB) UpdateItem(i *Item) bool {
 		var a []any
 		a = append(a, i.ProductID, i.ID)
 		suc = d.DB.Update(updateItem, a...)
-		log.Println("suc in update blog", suc)
+		log.Println("suc in update item", suc)
 	}
 	return suc
 }

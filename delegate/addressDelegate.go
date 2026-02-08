@@ -25,6 +25,7 @@ func (d *ServiceDelegate) ProcessCustomerAddresses(padds *[]ProxyAddress) *[]Add
 			var a Address
 			a.ID = pa.ID
 			a.CID = pa.CID
+			a.City = pa.City
 			a.Street = pa.Street
 			a.State = pa.State
 			a.ZipCode = pa.ZipCode

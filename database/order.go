@@ -17,8 +17,8 @@ func (d *OrderDB) AddOrder(o *Order) (bool, int64) {
 		a = append(a, o.CID, o.OrderNumber, time.Now())
 		log.Println(a)
 		suc, id = d.DB.Insert(insertOrder, a...)
-		log.Println("suc in add blog", suc)
-		log.Println("id in add blog", id)
+		log.Println("suc in add order", suc)
+		log.Println("id in add order", id)
 	}
 	return suc, id
 }
@@ -32,7 +32,7 @@ func (d *OrderDB) UpdateOrder(o *Order) bool {
 		var a []any
 		a = append(a, o.OrderNumber, time.Now(), o.ID)
 		suc = d.DB.Update(updateOrder, a...)
-		log.Println("suc in update blog", suc)
+		log.Println("suc in update order", suc)
 	}
 	return suc
 }
