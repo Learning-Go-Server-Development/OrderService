@@ -13,8 +13,8 @@ import (
 
 func (h *ServiceHandler) AddOrder(w http.ResponseWriter, r *http.Request) {
 	h.setContentType(w)
-	Ok := h.checkContent(r)
-	if !Ok {
+	ok := h.checkContent(r)
+	if !ok {
 		http.Error(w, "json required", http.StatusUnsupportedMediaType)
 	} else {
 		var o manager.Order
