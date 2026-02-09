@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 
 	px "github.com/GolangToolKits/go-http-proxy"
 	gdb "github.com/GolangToolKits/go-mysql"
@@ -70,6 +71,13 @@ func main() {
 	hh.Manager = sm.New()
 
 	port := "3000"
+	envPort := os.Getenv("PORT")
+	if envPort != "" {
+		portInt, _ := strconv.Atoi(envPort)
+		if portInt != 0 {
+			port = envPort
+		}
+	}
 
 	router := mux.NewRouter()
 
