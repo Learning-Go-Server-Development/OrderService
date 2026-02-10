@@ -20,6 +20,7 @@ func main() {
 	var dbHost string
 	var dbUser string
 	var dbPassword string
+	var orderServiceHost string
 
 	if os.Getenv("DB_HOST") != "" {
 		dbHost = os.Getenv("DB_HOST")
@@ -39,6 +40,12 @@ func main() {
 		dbPassword = ""
 	}
 
+	if os.Getenv("ORDER_SERVICE_HOST") != "" {
+		orderServiceHost = os.Getenv("ORDER_SERVICE_HOST")
+	} else {
+		orderServiceHost = "http://localhost:3001/rs"
+	}
+
 	//create database
 	mm := &gdb.MyDB{
 		Host:     dbHost,
@@ -48,6 +55,7 @@ func main() {
 	}
 	m := mm.New()
 	m.Connect()
+
 	var odb database.OrderDB
 	odb.DB = m
 	//----------
@@ -65,10 +73,11 @@ func main() {
 	sm.Delegate = del.New()
 
 	// set OrderService Host URL
-	sm.OrderServiceHost = "http://localhost:3001/rs"
+	sm.OrderServiceHost = orderServiceHost
 
 	var hh handlers.ServiceHandler
 	hh.Manager = sm.New()
+	h := hh.New()
 
 	port := "3000"
 	envPort := os.Getenv("PORT")
@@ -81,7 +90,13 @@ func main() {
 
 	router := mux.NewRouter()
 
-	h := hh.New()
+	router.CORSAllowCredentials()
+	router.SetCorsAllowedHeaders("X-Requested-With, Content-Type, apiKey, Origin")
+
+	// this needs to be the address of the JavaScript application and not *
+	router.SetCorsAllowedOrigins("https://www.some-client-app.com")
+	router.SetCorsAllowedMethods("GET, DELETE, POST, PUT")
+	router.EnableCORS()
 
 	// configure routes-------------
 	router.HandleFunc("/rs/order/add", h.AddOrder).Methods("POST")
