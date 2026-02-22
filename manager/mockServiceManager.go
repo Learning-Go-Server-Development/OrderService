@@ -16,6 +16,7 @@ type MockServiceManager struct {
 	UpdateOrderRes *Response
 	MockOrder      *Order
 	MockOrders     *[]Order
+	MockPastOrders *[]ProxyOrder
 	DeleteOrderRes *Response
 
 	AddItemRes    *ResponseID
@@ -45,8 +46,8 @@ func (s *MockServiceManager) GetCurrentOrders(cid int64) *[]Order {
 	return s.MockOrders
 }
 
-func (s *MockServiceManager) GetPastOrders(cid int64) *[]Order {
-	return s.MockOrders
+func (s *MockServiceManager) GetPastOrders(cid int64) *[]ProxyOrder {
+	return s.MockPastOrders
 }
 
 func (s *MockServiceManager) DeleteCurrentOrder(id int64) *Response {

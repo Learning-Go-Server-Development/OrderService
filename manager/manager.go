@@ -7,7 +7,7 @@ type Manager interface {
 	UpdateOrder(o *Order) *Response
 	GetOrder(id int64) *Order
 	GetCurrentOrders(cid int64) *[]Order
-	GetPastOrders(cid int64) *[]Order
+	GetPastOrders(cid int64) *[]ProxyOrder
 	DeleteCurrentOrder(id int64) *Response
 
 	AddItem(i *Item) *ResponseID

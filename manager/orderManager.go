@@ -84,28 +84,18 @@ func (s *ServiceManager) GetCurrentOrders(cid int64) *[]Order {
 	return &rtn
 }
 
-func (s *ServiceManager) GetPastOrders(cid int64) *[]Order {
-	var rtn = []Order{}
+func (s *ServiceManager) GetPastOrders(cid int64) *[]ProxyOrder {
+	var pods = []ProxyOrder{}
 	if cid != 0 {
-		var pods []ProxyOrder
 		scid := strconv.FormatInt(cid, 10)
 		req, err := http.NewRequest(http.MethodGet, s.OrderServiceHost+"/orders/get/"+scid, nil)
 		if err == nil {
 			suc, stat := s.Proxy.Do(req, &pods)
 			log.Println("suc: ", suc)
 			log.Println("stat: ", stat)
-			if suc && stat == http.StatusOK {
-				for _, po := range pods {
-					var o Order
-					o.ID = po.ID
-					o.CustomerID = po.CID
-					o.OrderNumber = po.OID
-					rtn = append(rtn, o)
-				}
-			}
 		}
 	}
-	return &rtn
+	return &pods
 }
 
 func (s *ServiceManager) DeleteCurrentOrder(id int64) *Response {

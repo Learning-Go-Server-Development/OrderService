@@ -255,7 +255,7 @@ func TestServiceHandler_GetPastOrders(t *testing.T) {
 		suc   bool
 		want2 bool
 		cid   string
-		os    *[]manager.Order
+		os    *[]manager.ProxyOrder
 		id    int64
 		len   int
 	}{
@@ -265,11 +265,11 @@ func TestServiceHandler_GetPastOrders(t *testing.T) {
 			name: "test 1",
 			code: 200,
 			cid:  "1",
-			os: &[]manager.Order{
+			os: &[]manager.ProxyOrder{
 				{
-					ID:          1,
-					OrderNumber: "OD-12345",
-					CustomerID:  55,
+					ID:  1,
+					OID: "OD-12345",
+					CID: 55,
 				},
 			},
 			id:  11,
@@ -280,7 +280,7 @@ func TestServiceHandler_GetPastOrders(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			// TODO: construct the receiver type.
 			//var h handlers.ServiceHandler
-			mm.MockOrders = tt.os
+			mm.MockPastOrders = tt.os
 			r, _ := http.NewRequest("GET", "/ffllist", nil)
 			vars := map[string]string{
 				"cid": tt.cid,
